@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Checkbox } from '@/components/ui/checkbox'
+import { SelectLecturesDropdown } from '@/components/select-lectures-dropdown'
 
 async function UserOrLogin() {
   return (
@@ -37,44 +38,7 @@ export function Header() {
         </React.Suspense>
       </div>
       <div className="flex items-center justify-end space-x-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="default">Querying all lectures</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            sideOffset={8}
-            className="w-56 p-4 space-y-4"
-          >
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Lecture 1
-              </label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Lecture 2
-              </label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Lecture 2
-              </label>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <SelectLecturesDropdown />
       </div>
     </header>
   )
