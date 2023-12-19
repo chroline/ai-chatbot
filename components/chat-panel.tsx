@@ -54,7 +54,7 @@ export function ChatPanel({
           ) : (
             messages?.length >= 2 && (
               <div className="flex space-x-2">
-                <Button variant="outline" onClick={() => reload()}>
+                <Button variant="secondary" onClick={() => reload()}>
                   <IconRefresh className="mr-2" />
                   Regenerate response
                 </Button>
@@ -84,7 +84,7 @@ export function ChatPanel({
             )
           )}
         </div>
-        <div className="px-4 py-2 space-y-4 border-t shadow-lg bg-background sm:rounded-t-xl sm:border md:py-4">
+        <div className="px-4 pb-4 pt-2 space-y-2 border-t shadow-lg bg-background sm:rounded-t-xl sm:border md:pt-4 md:space-y-4">
           <PromptForm
             onSubmit={async value => {
               await append({
@@ -97,7 +97,7 @@ export function ChatPanel({
             setInput={setInput}
             isLoading={isLoading}
           />
-          <FooterText className="hidden sm:block" />
+          <FooterText className="block" />
         </div>
       </div>
     </div>

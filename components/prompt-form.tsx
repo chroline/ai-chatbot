@@ -9,7 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
+import { IconArrowElbow, IconTrash } from '@/components/ui/icons'
 import { useRouter } from 'next/navigation'
 
 export interface PromptProps
@@ -59,11 +59,11 @@ export function PromptForm({
                 'absolute left-0 top-4 h-8 w-8 rounded-full bg-background p-0 sm:left-4'
               )}
             >
-              <IconPlus />
-              <span className="sr-only">New Chat</span>
+              <IconTrash />
+              <span className="sr-only">Clear chat</span>
             </button>
           </TooltipTrigger>
-          <TooltipContent>New Chat</TooltipContent>
+          <TooltipContent>Clear chat</TooltipContent>
         </Tooltip>
         <Textarea
           ref={inputRef}
