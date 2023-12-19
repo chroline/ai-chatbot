@@ -2,8 +2,6 @@ import * as React from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
-import { auth } from '@/auth'
-import { clearChats } from '@/app/actions'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { IconNextChat, IconSeparator } from '@/components/ui/icons'
 import {
@@ -14,7 +12,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 
 async function UserOrLogin() {
-  const session = await auth()
   return (
     <>
       <Link href="/" target="_blank" rel="nofollow">
@@ -40,24 +37,44 @@ export function Header() {
         </React.Suspense>
       </div>
       <div className="flex items-center justify-end space-x-2">
-        <a
-          target="_blank"
-          href="https://github.com/vercel/nextjs-ai-chatbot/"
-          rel="noopener noreferrer"
-          className={cn(buttonVariants({ variant: 'outline' }))}
-        >
-          <IconGitHub />
-          <span className="hidden ml-2 md:flex">GitHub</span>
-        </a>
-        <a
-          href="https://github.com/vercel/nextjs-ai-chatbot/"
-          target="_blank"
-          className={cn(buttonVariants())}
-        >
-          <IconVercel className="mr-2" />
-          <span className="hidden sm:block">Deploy to Vercel</span>
-          <span className="sm:hidden">Deploy</span>
-        </a>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="default">Querying all lectures</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            sideOffset={8}
+            className="w-56 p-4 space-y-4"
+          >
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Lecture 1
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Lecture 2
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Lecture 2
+              </label>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   )
