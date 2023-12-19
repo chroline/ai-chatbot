@@ -13,7 +13,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Rubik'],
-        mono: ['Fira Mono']
+        mono: ['JetBrains Mono']
       },
       colors: {
         border: 'hsl(var(--border))',
