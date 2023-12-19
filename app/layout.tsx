@@ -1,9 +1,6 @@
 import { Toaster } from 'react-hot-toast'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
 
 import '@/app/globals.css'
-import { cn } from '@/lib/utils'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
@@ -36,13 +33,19 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          'font-sans antialiased',
-          GeistSans.variable,
-          GeistMono.variable
-        )}
-      >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fira+Mono&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={'font-sans antialiased'}>
         <Toaster />
         <Providers
           attribute="class"
