@@ -5,48 +5,27 @@ import { cn } from '@/lib/utils'
 import { auth } from '@/auth'
 import { clearChats } from '@/app/actions'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Sidebar } from '@/components/sidebar'
-import { SidebarList } from '@/components/sidebar-list'
+import { IconNextChat, IconSeparator } from '@/components/ui/icons'
 import {
-  IconGitHub,
-  IconNextChat,
-  IconSeparator,
-  IconVercel
-} from '@/components/ui/icons'
-import { SidebarFooter } from '@/components/sidebar-footer'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { ClearHistory } from '@/components/clear-history'
-import { UserMenu } from '@/components/user-menu'
-import { SidebarMobile } from './sidebar-mobile'
-import { SidebarToggle } from './sidebar-toggle'
-import { ChatHistory } from './chat-history'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { Checkbox } from '@/components/ui/checkbox'
 
 async function UserOrLogin() {
   const session = await auth()
   return (
     <>
-      {session?.user ? (
-        <>
-          <SidebarMobile>
-            <ChatHistory userId={session.user.id} />
-          </SidebarMobile>
-          <SidebarToggle />
-        </>
-      ) : (
-        <Link href="/" target="_blank" rel="nofollow">
-          <IconNextChat className="w-6 h-6 mr-2 dark:hidden" inverted />
-          <IconNextChat className="hidden w-6 h-6 mr-2 dark:block" />
-        </Link>
-      )}
+      <Link href="/" target="_blank" rel="nofollow">
+        <IconNextChat className="w-6 h-6 mr-2 dark:hidden" inverted />
+        <IconNextChat className="hidden w-6 h-6 mr-2 dark:block" />
+      </Link>
       <div className="flex items-center">
         <IconSeparator className="w-6 h-6 text-muted-foreground/50" />
-        {session?.user ? (
-          <UserMenu user={session.user} />
-        ) : (
-          <Button variant="link" asChild className="-ml-2">
-            <Link href="/sign-in?callbackUrl=/">Login</Link>
-          </Button>
-        )}
+        <Button variant="link" asChild className="-ml-2">
+          <Link href="/sign-in?callbackUrl=/">Login</Link>
+        </Button>
       </div>
     </>
   )
