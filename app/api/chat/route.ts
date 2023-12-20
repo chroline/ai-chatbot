@@ -1,52 +1,80 @@
 import { kv } from '@vercel/kv'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import OpenAI from 'openai'
 
 import { nanoid } from '@/lib/utils'
+import searchIndex from '@/app/api/chat/search-index'
+import transformDocsToContext from '@/app/api/chat/transform-docs-to-context'
+import generateAnswer from '@/lib/chains/generate-answer'
+import rewordQuery from '@/lib/chains/reword-query'
+import findRelevantSources from '@/lib/chains/find-relevant-sources'
 
 export const runtime = 'edge'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
-
 export async function POST(req: Request) {
   const json = await req.json()
-  const { messages, previewToken } = json
+  const { messages: rawMessages, lectures } = json
 
-  if (previewToken) {
-    openai.apiKey = previewToken
-  }
+  const messages = rawMessages.map(
+    (message: { role: string; content: string }) => ({
+      ...message,
+      content: message.content.split('<<SOURCES>>')[0]
+    })
+  )
 
-  const res = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    messages,
-    temperature: 0.7,
-    stream: true
-  })
+  const query = messages[messages.length - 1].content
+  const modifiedQuery = await rewordQuery(query, messages)
 
-  const stream = OpenAIStream(res, {
-    async onCompletion(completion) {
-      const title = json.messages[0].content.substring(0, 100)
-      const id = json.id ?? nanoid()
-      const createdAt = Date.now()
-      const path = `/chat/${id}`
-      const payload = {
-        id,
-        title,
-        createdAt,
-        path,
-        messages: [
-          ...messages,
-          {
-            content: completion,
-            role: 'assistant'
-          }
-        ]
+  const docs = await searchIndex(modifiedQuery, lectures)
+  const context = transformDocsToContext(docs)
+
+  const relevantDocs = await findRelevantSources(query, context).then(indices =>
+    docs.filter((_, i) => indices.includes(i))
+  )
+  const relevantContext = transformDocsToContext(relevantDocs)
+
+  const stream = OpenAIStream(
+    await generateAnswer(query, relevantContext, messages),
+    {
+      async onCompletion(completion) {
+        const title = json.messages[0].content.substring(0, 100)
+        const id = json.id ?? nanoid()
+        const createdAt = Date.now()
+        const path = `/chat/${id}`
+        const payload = {
+          id,
+          title,
+          createdAt,
+          path,
+          messages: [
+            ...messages,
+            {
+              content: completion,
+              role: 'assistant'
+            }
+          ]
+        }
+        await kv.hmset(`chat:${id}`, payload)
       }
-      await kv.hmset(`chat:${id}`, payload)
+    }
+  )
+
+  const newStream = new TransformStream({
+    transform(chunk, controller) {
+      controller.enqueue(chunk)
+    },
+    flush(controller) {
+      if (docs.length > 0) {
+        controller.enqueue(
+          '<<SOURCES>>' +
+            JSON.stringify(
+              docs.map(doc => ({ filename: doc.filename, header: doc.header }))
+            )
+        )
+      }
     }
   })
 
-  return new StreamingTextResponse(stream)
+  stream.pipeTo(newStream.writable)
+
+  return new StreamingTextResponse(newStream.readable)
 }
