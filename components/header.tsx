@@ -25,7 +25,9 @@ export function Header() {
         </Link>
         <div className="flex items-center">
           <IconSeparator className="w-6 h-6 text-muted-foreground/50" />
-          <p className="font-bold font-mono text-lg ml-1 sm:ml-2">LING 385</p>
+          <Link href="/" className="font-bold font-mono text-lg ml-1 sm:ml-2">
+            LING 385
+          </Link>
         </div>
       </div>
       <div className="flex items-center justify-end space-x-2">
