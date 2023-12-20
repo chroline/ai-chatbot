@@ -16,13 +16,15 @@ export interface PromptProps
   extends Pick<UseChatHelpers, 'input' | 'setInput'> {
   onSubmit: (value: string) => void
   isLoading: boolean
+  clearMessages: () => void
 }
 
 export function PromptForm({
   onSubmit,
   input,
   setInput,
-  isLoading
+  isLoading,
+  clearMessages
 }: PromptProps) {
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
@@ -41,7 +43,7 @@ export function PromptForm({
           return
         }
         setInput('')
-        await onSubmit(input)
+        onSubmit(input)
       }}
       ref={formRef}
     >
@@ -49,11 +51,7 @@ export function PromptForm({
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              onClick={e => {
-                e.preventDefault()
-                router.refresh()
-                router.push('/')
-              }}
+              onClick={clearMessages}
               className={cn(
                 buttonVariants({ size: 'sm', variant: 'outline' }),
                 'absolute left-0 top-4 h-8 w-8 rounded-full bg-background p-0 sm:left-4'

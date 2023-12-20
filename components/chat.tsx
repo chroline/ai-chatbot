@@ -41,27 +41,35 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
 
   const [lectures] = useSelectedLectures()
 
-  const { messages, append, reload, stop, isLoading, input, setInput } =
-    useChat({
-      initialMessages,
+  const {
+    messages,
+    append,
+    reload,
+    stop,
+    isLoading,
+    input,
+    setInput,
+    setMessages
+  } = useChat({
+    initialMessages,
+    id,
+    body: {
       id,
-      body: {
-        id,
-        previewToken,
-        lectures
-      },
-      onResponse(response) {
-        if (response.status === 401) {
-          toast.error(response.statusText)
-        }
-      },
-      onFinish() {
-        if (!path.includes('chat')) {
-          router.push(`/chat/${id}`, { shallow: true, scroll: false })
-          router.refresh()
-        }
+      previewToken,
+      lectures
+    },
+    onResponse(response) {
+      if (response.status === 401) {
+        toast.error(response.statusText)
       }
-    })
+    },
+    onFinish() {
+      if (!path.includes('chat')) {
+        router.push(`/chat/${id}`, { shallow: true, scroll: false })
+        router.refresh()
+      }
+    }
+  })
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -83,6 +91,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         messages={messages}
         input={input}
         setInput={setInput}
+        setMessages={setMessages}
       />
 
       <Dialog open={previewTokenDialog} onOpenChange={setPreviewTokenDialog}>

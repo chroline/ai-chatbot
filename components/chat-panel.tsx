@@ -19,6 +19,7 @@ export interface ChatPanelProps
     | 'stop'
     | 'input'
     | 'setInput'
+    | 'setMessages'
   > {
   id?: string
 }
@@ -31,7 +32,8 @@ export function ChatPanel({
   reload,
   input,
   setInput,
-  messages
+  messages,
+  setMessages
 }: ChatPanelProps) {
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
 
@@ -90,6 +92,7 @@ export function ChatPanel({
             input={input}
             setInput={setInput}
             isLoading={isLoading}
+            clearMessages={() => setMessages([])}
           />
           <FooterText className="block" />
         </div>
