@@ -1,10 +1,11 @@
-export default `Here is a conversation between a client and a nutritionist:
+export default `Here is a conversation between a user and an AI assistant:
 
 {{conversation}}
 
-Based on this previous conversation, rephrase the next query from the client into a Google search phrase.
+Based on the previous messages, rephrase the next query based on the context of the conversation.
 The transformed query should be simple but keep the main idea of the query.
 
 Just respond with the rephrased query, no other text is needed.
 
-Next query: "{{query}}}"`
+User query: "{{query}}}"
+Rephrased query:`
