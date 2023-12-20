@@ -27,10 +27,21 @@ export async function POST(req: Request) {
   const docs = await searchIndex(modifiedQuery, lectures)
   const context = transformDocsToContext(docs)
 
-  const relevantDocs = await findRelevantSources(query, context).then(indices =>
-    docs.filter((_, i) => indices.includes(i))
+  const relevantDocs = await findRelevantSources(modifiedQuery, context).then(
+    indices => docs.filter((_, i) => indices.includes(i))
   )
   const relevantContext = transformDocsToContext(relevantDocs)
+
+  const sourcesString =
+    relevantDocs.length > 0
+      ? '<<SOURCES>>' +
+        JSON.stringify(
+          relevantDocs.map(doc => ({
+            filename: doc.filename,
+            header: doc.header
+          }))
+        )
+      : ''
 
   const stream = OpenAIStream(
     await generateAnswer(query, relevantContext, messages),
@@ -48,7 +59,7 @@ export async function POST(req: Request) {
           messages: [
             ...messages,
             {
-              content: completion,
+              content: completion + sourcesString,
               role: 'assistant'
             }
           ]
@@ -63,20 +74,7 @@ export async function POST(req: Request) {
       controller.enqueue(chunk)
     },
     flush(controller) {
-      if (docs.length > 0) {
-        controller.enqueue(
-          Buffer.from(
-            '<<SOURCES>>' +
-              JSON.stringify(
-                docs.map(doc => ({
-                  filename: doc.filename,
-                  header: doc.header
-                }))
-              ),
-            'utf-8'
-          )
-        )
-      }
+      controller.enqueue(Buffer.from(sourcesString, 'utf-8'))
     }
   })
 
