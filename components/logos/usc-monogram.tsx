@@ -19,3 +19,5 @@ export const USCMonogramLogo = React.forwardRef<
     </svg>
   )
 })
+
+USCMonogramLogo.displayName = USCMonogramLogo.name

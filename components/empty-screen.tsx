@@ -56,8 +56,9 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
           </p>
         </div>
         <div className="mt-4 flex flex-col items-start space-y-2">
-          {exampleMessages.map((message, index) => (
+          {exampleMessages.map((message, i) => (
             <Link
+              key={i}
               href={message.url}
               className={cn(
                 buttonVariants({ variant: 'link' }),

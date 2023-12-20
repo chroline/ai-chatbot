@@ -27,3 +27,5 @@ export const USCWordmarkLogo = React.forwardRef<
     </svg>
   )
 })
+
+USCWordmarkLogo.displayName = USCWordmarkLogo.name

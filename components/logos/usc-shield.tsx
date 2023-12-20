@@ -27,3 +27,5 @@ export const USCShieldLogo = React.forwardRef<
     </svg>
   )
 })
+
+USCShieldLogo.displayName = USCShieldLogo.name
