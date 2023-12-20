@@ -21,13 +21,13 @@ import { IconSpinner } from '@/components/ui/icons'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
 interface ChatShareDialogProps extends DialogProps {
-  chat: Pick<Chat, 'id' | 'title' | 'messages'>
+  id: string
   shareChat: (id: string) => ServerActionResult<Chat>
   onCopy: () => void
 }
 
 export function ChatShareDialog({
-  chat,
+  id,
   shareChat,
   onCopy,
   ...props
@@ -70,19 +70,13 @@ export function ChatShareDialog({
             Anyone with the URL will be able to view the shared chat.
           </DialogDescription>
         </DialogHeader>
-        <div className="p-4 space-y-1 text-sm border rounded-md">
-          <div className="font-medium">{chat.title}</div>
-          <div className="text-muted-foreground">
-            {chat.messages.length} messages
-          </div>
-        </div>
         <DialogFooter className="items-center">
           <Button
             disabled={isSharePending}
             onClick={() => {
               // @ts-ignore
               startShareTransition(async () => {
-                const result = await shareChat(chat.id)
+                const result = await shareChat(id)
 
                 if (result && 'error' in result) {
                   toast.error(result.error)

@@ -8,7 +8,7 @@ import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 import { cn } from '@/lib/utils'
 
 interface ChatMessageActionsProps extends React.ComponentProps<'div'> {
-  message: Message
+  message: { role: string; content: string }
 }
 
 export function ChatMessageActions({
@@ -20,7 +20,7 @@ export function ChatMessageActions({
 
   const onCopy = () => {
     if (isCopied) return
-    copyToClipboard(message.content)
+    copyToClipboard(message.content.split('<<SOURCES>>')[0])
   }
 
   return (

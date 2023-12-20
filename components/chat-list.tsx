@@ -4,10 +4,11 @@ import { Separator } from '@/components/ui/separator'
 import { ChatMessage } from '@/components/chat-message'
 
 export interface ChatList {
+  isLoading: boolean
   messages: Message[]
 }
 
-export function ChatList({ messages }: ChatList) {
+export function ChatList({ isLoading, messages }: ChatList) {
   if (!messages.length) {
     return null
   }
@@ -22,6 +23,12 @@ export function ChatList({ messages }: ChatList) {
           )}
         </div>
       ))}
+      {isLoading && messages[messages.length - 1].role === 'user' && (
+        <div>
+          <Separator className="my-4 md:my-8" />
+          <ChatMessage message={{ role: 'assistant', content: '' }} />
+        </div>
+      )}
     </div>
   )
 }

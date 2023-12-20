@@ -21,12 +21,10 @@ export interface ChatPanelProps
     | 'setInput'
   > {
   id?: string
-  title?: string
 }
 
 export function ChatPanel({
   id,
-  title,
   isLoading,
   stop,
   append,
@@ -44,7 +42,7 @@ export function ChatPanel({
         <div className="flex items-center justify-center h-12">
           {isLoading ? (
             <Button
-              variant="outline"
+              variant="secondary"
               onClick={() => stop()}
               className="bg-background"
             >
@@ -58,10 +56,10 @@ export function ChatPanel({
                   <IconRefresh className="mr-2" />
                   Regenerate response
                 </Button>
-                {id && title ? (
+                {id ? (
                   <>
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       onClick={() => setShareDialogOpen(true)}
                     >
                       <IconShare className="mr-2" />
@@ -72,11 +70,7 @@ export function ChatPanel({
                       onOpenChange={setShareDialogOpen}
                       onCopy={() => setShareDialogOpen(false)}
                       shareChat={shareChat}
-                      chat={{
-                        id,
-                        title,
-                        messages
-                      }}
+                      id={id}
                     />
                   </>
                 ) : null}
