@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { fullLectureArray } from '@/lib/utils'
 
 type SelectedLecturesContext = [
   number[],
@@ -28,9 +29,7 @@ interface SelectedLecturesProviderProps {
 export function SelectedLecturesProvider({
   children
 }: SelectedLecturesProviderProps) {
-  const state = React.useState<number[]>(
-    Array.from({ length: 19 }, (_, index) => index)
-  )
+  const state = React.useState<number[]>(fullLectureArray)
 
   return (
     <SelectedLecturesContext.Provider value={state}>

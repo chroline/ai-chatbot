@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import * as React from 'react'
 import { useSelectedLectures } from '@/lib/hooks/use-selected-lectures'
+import { fullLectureArray } from '@/lib/utils'
 
 export function SelectLecturesDropdown() {
   const [selectedLectures, setSelectedLectures] = useSelectedLectures()
@@ -26,7 +27,7 @@ export function SelectLecturesDropdown() {
       <DropdownMenuTrigger asChild>
         <Button variant="default" className="shadow-none">
           Querying{' '}
-          {selectedLectures.length === 19 ? 'all' : selectedLectures.length}{' '}
+          {selectedLectures.length === 20 ? 'all' : selectedLectures.length}{' '}
           lecture{selectedLectures.length !== 1 ? 's' : ''}
         </Button>
       </DropdownMenuTrigger>
@@ -40,11 +41,7 @@ export function SelectLecturesDropdown() {
             size="sm"
             variant="link"
             className="w-full px-0"
-            onClick={() =>
-              setSelectedLectures(
-                Array.from({ length: 19 }, (_, index) => index)
-              )
-            }
+            onClick={() => setSelectedLectures(fullLectureArray)}
           >
             Select All
           </Button>
@@ -57,7 +54,7 @@ export function SelectLecturesDropdown() {
             De-select All
           </Button>
         </div>
-        {Array.from({ length: 19 }, (_, index) => index).map(i => (
+        {fullLectureArray.map(i => (
           <div key={i} className="flex items-center space-x-2">
             <Checkbox
               id={'lecture-' + i}
