@@ -65,10 +65,16 @@ export async function POST(req: Request) {
     flush(controller) {
       if (docs.length > 0) {
         controller.enqueue(
-          '<<SOURCES>>' +
-            JSON.stringify(
-              docs.map(doc => ({ filename: doc.filename, header: doc.header }))
-            )
+          Buffer.from(
+            '<<SOURCES>>' +
+              JSON.stringify(
+                docs.map(doc => ({
+                  filename: doc.filename,
+                  header: doc.header
+                }))
+              ),
+            'utf-8'
+          )
         )
       }
     }
