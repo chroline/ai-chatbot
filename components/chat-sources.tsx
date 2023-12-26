@@ -1,4 +1,6 @@
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 interface ChatSourcesProps {
   sources: { filename: string; header: string }[]
@@ -10,11 +12,16 @@ export function ChatSources({ sources }: ChatSourcesProps) {
       <p className="font-bold opacity-50 text-xs mb-2">READ MORE</p>
       <div className="flex flex-wrap overflow-hidden">
         {sources.map((source, i) => (
-          <Button
+          <Link
             key={i}
-            variant={'outline'}
-            size="xs"
-            className="shrink-0 mr-1 mt-1 shadow-none text-left"
+            href={`https://notes.colegaw.in/course/ling-385/${encodeURIComponent(
+              source.filename
+            )}#heading-${encodeURIComponent(source.header)}`}
+            target={'_blank'}
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'xs' }),
+              'shrink-0 mr-1 mt-1 shadow-none text-left'
+            )}
           >
             <span>
               {source.filename}{' '}
@@ -32,7 +39,7 @@ export function ChatSources({ sources }: ChatSourcesProps) {
                 fill="currentColor"
               ></path>
             </svg>
-          </Button>
+          </Link>
         ))}
       </div>
     </div>
