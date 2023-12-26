@@ -52,6 +52,7 @@ export function EmptyScreen() {
             <Link
               key={i}
               href={message.url}
+              target={'_blank'}
               className={cn(
                 buttonVariants({ variant: 'link' }),
                 'h-auto p-0 text-base'
