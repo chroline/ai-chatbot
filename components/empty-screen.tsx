@@ -1,31 +1,23 @@
-import { UseChatHelpers } from 'ai/react'
-
-import { Button, buttonVariants } from '@/components/ui/button'
-import { ExternalLink } from '@/components/external-link'
+import { buttonVariants } from '@/components/ui/button'
 import { IconArrowRight, IconSeparator } from '@/components/ui/icons'
 import { USCShieldLogo } from '@/components/logos/usc-shield'
 import { USCWordmarkLogo } from '@/components/logos/usc-wordmark'
 import * as React from 'react'
-import { USCMonogramLogo } from '@/components/logos/usc-monogram'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
-const exampleMessages = [
+const links = [
   {
     heading: 'See all lecture notes',
-    url: `https://colegaw.in`
+    url: `https://notes.colegaw.in/course/ling-385`
   },
   {
     heading: 'View source code',
-    url: 'https://colegaw.in'
+    url: 'https://github.com/chroline/ling385-chatbot'
   }
-  // {
-  //   heading: 'Read more about this project',
-  //   url: `https://colegaw.in`
-  // }
 ]
 
-export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
+export function EmptyScreen() {
   return (
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
@@ -56,7 +48,7 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
           </p>
         </div>
         <div className="mt-4 flex flex-col items-start space-y-2">
-          {exampleMessages.map((message, i) => (
+          {links.map((message, i) => (
             <Link
               key={i}
               href={message.url}
